@@ -1,0 +1,39 @@
+OASISFormat: 0.4
+Name:        xxhash
+Version:     0.1
+Synopsis:    Bindings for xxHash, an extremely fast hash algorithm
+Authors:     Pieter Goetschalckx
+License:     MIT
+Homepage:    https://github.com/314eter/ocaml-xxhash
+BugReports:  https://github.com/314eter/ocaml-xxhash/issues
+Plugins:     META (0.4), DevFiles (0.4)
+BuildTools:  ocamlbuild
+
+Library xxhash
+  Path:            lib
+  Modules:         XXHash
+  InternalModules: Xxhash_bindings, Xxhash_generated
+  CClib:           -lxxhash
+  BuildDepends:    ctypes.stubs
+  CSources:        xxhash_stubs.c
+  BuildTools:      xxhash_stubgen
+
+Executable xxhash_stubgen
+  Install:        false
+  Path:           stubs
+  CompiledObject: best
+  MainIs:         xxhash_stubgen.ml
+  BuildDepends:   ctypes.stubs
+
+Document api
+  Title:      API reference
+  Type:       ocamlbuild (0.4)
+  BuildTools: ocamldoc
+  XOCamlbuildPath: lib
+  XOCamlbuildLibraries: xxhash
+
+SourceRepository "master"
+  Type:     git
+  Location: https://github.com/314eter/ocaml-xxhash.git
+  Browser:  https://github.com/314eter/ocaml-xxhash
+  Branch:   master
