@@ -18,6 +18,8 @@ module type BINDINGS = sig
   val reset : state -> internal -> int
   val update : state -> string -> Unsigned.size_t -> int
   val digest : state -> internal
+
+  val to_hex: hash -> string
 end
 
 module C (F : Cstubs.FOREIGN) = struct
@@ -44,6 +46,8 @@ module C (F : Cstubs.FOREIGN) = struct
     let reset = F.foreign "XXH32_reset" (ptr state_t @-> uint @-> returning int)
     let update = F.foreign "XXH32_update" (ptr state_t @-> string @-> size_t @-> returning int)
     let digest = F.foreign "XXH32_digest" (ptr state_t @-> returning uint)
+
+    let to_hex hash = Printf.sprintf "%nx" hash
   end
 
   module XXH64 = struct
@@ -67,6 +71,8 @@ module C (F : Cstubs.FOREIGN) = struct
     let reset = F.foreign "XXH64_reset" (ptr state_t @-> ullong @-> returning int)
     let update = F.foreign "XXH64_update" (ptr state_t @-> string @-> size_t @-> returning int)
     let digest = F.foreign "XXH64_digest" (ptr state_t @-> returning ullong)
+
+    let to_hex hash = Printf.sprintf "%Lx" hash
   end
 
   type xxh3_state_s
@@ -94,6 +100,8 @@ module C (F : Cstubs.FOREIGN) = struct
     let reset = F.foreign "XXH3_64bits_reset_withSeed" (ptr state_t @-> ullong @-> returning int)
     let update = F.foreign "XXH3_64bits_update" (ptr state_t @-> string @-> size_t @-> returning int)
     let digest = F.foreign "XXH3_64bits_digest" (ptr state_t @-> returning ullong)
+
+    let to_hex hash = Printf.sprintf "%Lx" hash
   end
 
   (* module XXH3_128 = struct

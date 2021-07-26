@@ -2,7 +2,7 @@ open XXHash
 
 let%expect_test _ =
   let hash = XXH32.hash "abcd" in
-  Printf.printf "%nx\n" hash;
+  print_endline (XXH32.to_hex hash);
   [%expect{|
     a3643705
   |}]
