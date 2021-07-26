@@ -100,7 +100,7 @@ module C (F : Cstubs.FOREIGN) = struct
     type hash = {low64: int64; high64: int64} 
     
     type internal
-    let xxh128_hash_t: internal structure typ = structure "xxh128_hash_t"
+    let xxh128_hash_t: internal structure typ = structure "XXH128_hash_t"
 
     let low64  = field xxh128_hash_t "low64" ullong
     let high64 = field xxh128_hash_t "high64" ullong
@@ -119,7 +119,7 @@ module C (F : Cstubs.FOREIGN) = struct
       setf v high64 (Unsigned.ULLong.of_int64 hash.high64);
       v 
 
-    let hash = F.foreign "XXH3_128bits_withSeed" (string @-> size_t @-> ullong @-> returning xxh128_hash_t)
+    let hash = F.foreign "XXH3_128bits_withSeed" (string @-> size_t @-> ullong @-> returning (ptr xxh128_hash_t))
 
     type nonrec state = xxh3_state
     let state_t = xxh3_state_t
@@ -129,6 +129,6 @@ module C (F : Cstubs.FOREIGN) = struct
 
     let reset = F.foreign "XXH3_128bits_reset_withSeed" (ptr state_t @-> ullong @-> returning int)
     let update = F.foreign "XXH3_128bits_update" (ptr state_t @-> string @-> size_t @-> returning int)
-    let digest = F.foreign "XXH3_128bits_digest" (ptr state_t @-> returning xxh128_hash_t)
+    let digest = F.foreign "XXH3_128bits_digest" (ptr state_t @-> returning (ptr xxh128_hash_t))
   end
 end
