@@ -95,4 +95,40 @@ module C (F : Cstubs.FOREIGN) = struct
     let update = F.foreign "XXH3_64bits_update" (ptr state_t @-> string @-> size_t @-> returning int)
     let digest = F.foreign "XXH3_64bits_digest" (ptr state_t @-> returning ullong)
   end
+
+  module XXH3_128 = struct
+    type hash = {low64: int64; high64: int64} 
+    
+    type internal
+    let xxh128_hash_t: internal structure typ = structure "xxh128_hash_t"
+
+    let low64  = field xxh128_hash_t "low64" ullong
+    let high64 = field xxh128_hash_t "high64" ullong
+    let () = seal xxh128_hash_t
+
+    let default_seed = {low64 = 0L; high64 = 0L}
+
+    let hash_of_internal internal = 
+      let low64 = Unsigned.ULLong.to_int64(getf internal low64) in
+      let high64 = Unsigned.ULLong.to_int64(getf internal high64) in
+      {low64 ; high64}
+
+    let internal_of_hash hash = 
+      let v = make xxh128_hash_t in
+      setf v low64 (Unsigned.ULLong.of_int64 hash.low64);
+      setf v high64 (Unsigned.ULLong.of_int64 hash.high64);
+      v 
+
+    let hash = F.foreign "XXH3_128bits_withSeed" (string @-> size_t @-> ullong @-> returning xxh128_hash_t)
+
+    type nonrec state = xxh3_state
+    let state_t = xxh3_state_t
+
+    let create = xxh3_create
+    let free = xxh3_free
+
+    let reset = F.foreign "XXH3_128bits_reset_withSeed" (ptr state_t @-> ullong @-> returning int)
+    let update = F.foreign "XXH3_128bits_update" (ptr state_t @-> string @-> size_t @-> returning int)
+    let digest = F.foreign "XXH3_128bits_digest" (ptr state_t @-> returning xxh128_hash_t)
+  end
 end
