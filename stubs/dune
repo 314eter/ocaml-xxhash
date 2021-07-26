@@ -30,6 +30,12 @@
  (foreign_stubs
   (language c)
   (names xxhash_stubs))
- (c_library_flags
-  (:standard -lxxhash))
+ (flags
+   :standard
+   (:include flags.sexp))
  (libraries ctypes ctypes.stubs ctypes.foreign))
+
+(rule
+ (targets flags.sexp)
+ (action
+  (run ./config/discover.exe)))
