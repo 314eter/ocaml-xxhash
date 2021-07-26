@@ -25,6 +25,7 @@ depends: [
   "dune-configurator"
   "ctypes"
   "ctypes-foreign"
+  "ppx-expect" {with-test}
   "odoc" {with-doc}
 ]
 depexts: [
