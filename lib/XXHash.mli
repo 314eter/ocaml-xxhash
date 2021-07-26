@@ -44,3 +44,4 @@ end
 
 module XXH32 : (XXHASH with type hash = nativeint)
 module XXH64 : (XXHASH with type hash = int64)
+module XXH3_64 : (XXHASH with type hash = int64)

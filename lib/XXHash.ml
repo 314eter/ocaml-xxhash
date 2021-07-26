@@ -59,3 +59,4 @@ module C = Xxhash_bindings.C (Xxhash_stubs)
 
 module XXH32 : (XXHASH with type hash = nativeint) = XXHash (C.XXH32)
 module XXH64 : (XXHASH with type hash = int64) = XXHash (C.XXH64)
+module XXH3_64 : (XXHASH with type hash = int64) = XXHash (C.XXH3_64)

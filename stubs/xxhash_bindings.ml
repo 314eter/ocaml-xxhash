@@ -68,4 +68,27 @@ module C (F : Cstubs.FOREIGN) = struct
     let update = F.foreign "XXH64_update" (ptr state_t @-> string @-> size_t @-> returning int)
     let digest = F.foreign "XXH64_digest" (ptr state_t @-> returning ullong)
   end
+
+  module XXH3_64 = struct
+    type hash = int64
+    type internal = Unsigned.ullong
+
+    let default_seed = 0L
+    let hash_of_internal = Unsigned.ULLong.to_int64
+    let internal_of_hash = Unsigned.ULLong.of_int64
+
+    let hash = F.foreign "XXH3_64bits_withSeed" (string @-> size_t @-> ullong @-> returning ullong)
+
+    type state_s
+    type state = state_s structure ptr
+
+    let state_t : state_s structure typ = structure "XXH3_state_s"
+
+    let create = F.foreign "XXH3_createState" (void @-> returning (ptr state_t))
+    let free = F.foreign "XXH3_freeState" (ptr state_t @-> returning int)
+
+    let reset = F.foreign "XXH3_64bits_reset_withSeed" (ptr state_t @-> ullong @-> returning int)
+    let update = F.foreign "XXH3_64bits_update" (ptr state_t @-> string @-> size_t @-> returning int)
+    let digest = F.foreign "XXH3_64bits_digest" (ptr state_t @-> returning ullong)
+  end
 end
