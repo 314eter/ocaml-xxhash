@@ -55,7 +55,7 @@ module XXHash (Bindings : Xxhash_bindings.BINDINGS) = struct
     h
 end
 
-module C = Xxhash_bindings.C (Xxhash_generated)
+module C = Xxhash_bindings.C (Xxhash_stubs)
 
 module XXH32 : (XXHASH with type hash = nativeint) = XXHash (C.XXH32)
 module XXH64 : (XXHASH with type hash = int64) = XXHash (C.XXH64)
