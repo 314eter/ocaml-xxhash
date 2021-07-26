@@ -96,7 +96,7 @@ module C (F : Cstubs.FOREIGN) = struct
     let digest = F.foreign "XXH3_64bits_digest" (ptr state_t @-> returning ullong)
   end
 
-  module XXH3_128 = struct
+  (* module XXH3_128 = struct
     type hash = {low64: int64; high64: int64} 
     
     type internal
@@ -130,5 +130,5 @@ module C (F : Cstubs.FOREIGN) = struct
     let reset = F.foreign "XXH3_128bits_reset_withSeed" (ptr state_t @-> ullong @-> returning int)
     let update = F.foreign "XXH3_128bits_update" (ptr state_t @-> string @-> size_t @-> returning int)
     let digest = F.foreign "XXH3_128bits_digest" (ptr state_t @-> returning (ptr xxh128_hash_t))
-  end
+  end *)
 end
