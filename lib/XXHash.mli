@@ -40,7 +40,10 @@ hash]}
       [with_state (fun state -> update state input)] is equivalent to [hash input].
   *)
   val with_state : ?seed:hash -> (state -> unit) -> hash
+
+  val to_hex: hash -> string
 end
 
 module XXH32 : (XXHASH with type hash = nativeint)
 module XXH64 : (XXHASH with type hash = int64)
+module XXH3_64 : (XXHASH with type hash = int64)

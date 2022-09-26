@@ -12,6 +12,8 @@ module type XXHASH = sig
   val free : state -> unit
 
   val with_state : ?seed:hash -> (state -> unit) -> hash
+
+  val to_hex: hash -> string
 end
 
 let check errorcode =
@@ -53,9 +55,11 @@ module XXHash (Bindings : Xxhash_bindings.BINDINGS) = struct
     let h = digest state in
     free state;
     h
+  let to_hex = Bindings.to_hex
 end
 
 module C = Xxhash_bindings.C (Xxhash_stubs)
 
 module XXH32 : (XXHASH with type hash = nativeint) = XXHash (C.XXH32)
 module XXH64 : (XXHASH with type hash = int64) = XXHash (C.XXH64)
+module XXH3_64 : (XXHASH with type hash = int64) = XXHash (C.XXH3_64)
