@@ -1,0 +1,41 @@
+(library 
+ (name xxhash_bindings)
+ (public_name xxhash.bindings)
+ (modules xxhash_bindings)
+ (libraries ctypes))
+
+(executable
+ (name stubgen)
+ (modules stubgen)
+ (libraries xxhash.bindings ctypes ctypes.stubs))
+
+(rule
+ (targets xxhash_stubs.c)
+ (action
+  (with-stdout-to
+   %{targets}
+   (run %{exe:stubgen.exe} -c))))
+
+(rule
+ (targets xxhash_stubs.ml)
+ (action
+  (with-stdout-to
+   %{targets}
+   (run %{exe:stubgen.exe} -ml))))
+
+(library
+ (name xxhash_stubs)
+ (public_name xxhash.stubs)
+ (modules xxhash_stubs)
+ (foreign_stubs
+  (language c)
+  (names xxhash_stubs))
+ (flags
+   :standard
+   (:include flags.sexp))
+ (libraries ctypes ctypes.stubs ctypes.foreign))
+
+(rule
+ (targets flags.sexp)
+ (action
+  (run ./config/discover.exe)))

@@ -1,0 +1,5 @@
+(library
+ (name xxhash)
+ (public_name xxhash)
+ (wrapped false)
+ (libraries xxhash.stubs xxhash.bindings ctypes ctypes.stubs ctypes.foreign))
