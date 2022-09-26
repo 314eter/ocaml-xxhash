@@ -23,13 +23,10 @@ build: [
 depends: [
   "dune" {>= "2.7"}
   "dune-configurator"
-  "ctypes"
+  "ctypes" {>= "0.6.0"}
   "ctypes-foreign"
-  "ppx-expect" {with-test}
+  "conf-xxhash"
+  "ppx_expect" {with-test}
   "odoc" {with-doc}
 ]
-depexts: [
-  ["xxhash"] {os = "macos" & os-distribution = "homebrew"}
-  ["libxxhash-dev"] {os-family = "debian"}
-]
-synopsis: "Bindings for xxHash, an extremely fast hash algorithm."
+synopsis: "Bindings for xxHash, an extremely fast hash algorithm"
