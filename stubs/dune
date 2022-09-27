@@ -1,41 +1,19 @@
-(library 
- (name xxhash_bindings)
- (public_name xxhash.bindings)
- (modules xxhash_bindings)
- (libraries ctypes))
-
-(executable
- (name stubgen)
- (modules stubgen)
- (libraries xxhash.bindings ctypes ctypes.stubs))
-
-(rule
- (targets xxhash_stubs.c)
- (action
-  (with-stdout-to
-   %{targets}
-   (run %{exe:stubgen.exe} -c))))
-
-(rule
- (targets xxhash_stubs.ml)
- (action
-  (with-stdout-to
-   %{targets}
-   (run %{exe:stubgen.exe} -ml))))
-
 (library
- (name xxhash_stubs)
- (public_name xxhash.stubs)
- (modules xxhash_stubs)
- (foreign_stubs
-  (language c)
-  (names xxhash_stubs))
- (flags
-   :standard
-   (:include flags.sexp))
- (libraries ctypes ctypes.stubs ctypes.foreign))
-
-(rule
- (targets flags.sexp)
- (action
-  (run ./config/discover.exe)))
+ (name xxhash_bindings)
+ (wrapped false)
+ (public_name xxhash.bindings)
+ ; ctypes backward compatibility shims warn sometimes; suppress them
+ (flags (:standard -w -9-27))
+ (ctypes
+  (external_library_name libxxhash)
+  (build_flags_resolver pkg_config)
+  (headers (include "xxhash.h"))
+  (type_description
+   (instance Type)
+   (functor Type_description))
+  (function_description
+   (concurrency unlocked)
+   (instance Function)
+   (functor Xxhash_bindings))
+  (generated_types Types_generated)
+  (generated_entry_point C)))
