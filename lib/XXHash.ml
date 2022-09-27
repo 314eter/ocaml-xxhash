@@ -50,11 +50,13 @@ module XXHash (Bindings : Xxhash_bindings.BINDINGS) = struct
 
   let with_state ?(seed=Bindings.default_seed) f =
     let state = create () in
-    reset ~seed state;
-    f state;
-    let h = digest state in
-    free state;
-    h
+    try
+      reset ~seed state;
+      f state;
+      let h = digest state in
+      free state;
+      h
+    with exn -> free state; raise exn
   let to_hex = Bindings.to_hex
 end
 
