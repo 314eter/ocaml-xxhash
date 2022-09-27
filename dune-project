@@ -1,4 +1,4 @@
-(lang dune 3.4)
+(lang dune 3.0)
 (using ctypes 0.1)
 (name xxhash)
 

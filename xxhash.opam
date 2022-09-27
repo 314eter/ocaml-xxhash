@@ -7,7 +7,7 @@ license: "MIT"
 homepage: "https://github.com/314eter/ocaml-xxhash"
 bug-reports: "https://github.com/314eter/ocaml-xxhash/issues"
 depends: [
-  "dune" {>= "3.4"}
+  "dune" {>= "3.0"}
   "ctypes" {>= "0.6.0"}
   "conf-xxhash"
   "ppx_expect" {with-test}
