@@ -22,7 +22,7 @@ module type BINDINGS = sig
   val to_hex: hash -> string
 end
 
-module C (F : Cstubs.FOREIGN) = struct
+module Functions (F : Cstubs.FOREIGN) = struct
   open F
 
   module XXH32 = struct

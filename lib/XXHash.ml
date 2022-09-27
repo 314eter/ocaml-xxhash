@@ -50,16 +50,16 @@ module XXHash (Bindings : Xxhash_bindings.BINDINGS) = struct
 
   let with_state ?(seed=Bindings.default_seed) f =
     let state = create () in
-    reset ~seed state;
-    f state;
-    let h = digest state in
-    free state;
-    h
+    try
+      reset ~seed state;
+      f state;
+      let h = digest state in
+      free state;
+      h
+    with exn -> free state; raise exn
   let to_hex = Bindings.to_hex
 end
 
-module C = Xxhash_bindings.C (Xxhash_stubs)
-
-module XXH32 : (XXHASH with type hash = nativeint) = XXHash (C.XXH32)
-module XXH64 : (XXHASH with type hash = int64) = XXHash (C.XXH64)
-module XXH3_64 : (XXHASH with type hash = int64) = XXHash (C.XXH3_64)
+module XXH32 : (XXHASH with type hash = nativeint) = XXHash (C.Function.XXH32)
+module XXH64 : (XXHASH with type hash = int64) = XXHash (C.Function.XXH64)
+module XXH3_64 : (XXHASH with type hash = int64) = XXHash (C.Function.XXH3_64)
